@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import xml.etree.ElementTree as ET
-from attendance.responses import create_register_response
+from attendance.responses import create_register_response, create_login_response
+
 
 class AttendanceConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -24,15 +25,25 @@ class AttendanceConsumer(AsyncWebsocketConsumer):
             print(productname)
             deviceserialno = tree.find('DeviceSerialNo').text
             print(deviceserialno)
+            
 
             self.send(create_register_response(rrid,deviceserialno))
+            
         if request_type == "Login":
-            token = tree.find("Token")
-
+            rrid = tree.find('Rrid').text
+            print(rrid)
+            deviceserialno = tree.find('DeviceSerialNo').text
+            print(deviceserialno)
+            
+            self.send(create_login_response(rrid, deviceserialno))
+            
+            
+            
+            
             
             
             
         
-        # attendance_data = json.loads(text_data)
+
         
     
