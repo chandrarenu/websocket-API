@@ -36,14 +36,17 @@ def create_login_response(rrid, deviceserialno, token=None):
     print(login_response)
     return login_response
 
-# def create_time_log(act_id, result):
-#     time_log_responses = f"""
+def create_time_log_response(rrid, deviceserialno):
+    time_log_response = f"""
     
-#     <?xml version="1.0"?>
-#     <message>
-#     <Response>TimeLog</Response>
-#     <Actid>{rrid}</Actid>
-#     <Time>{datetime.datetime.now().isoformat()[:-7] + 'Z'}</Time>
-#     <Result>OK/Fail<Result>
-#     </Message>
-#     """
+    <?xml version="1.0"?>
+    <message>
+    <Response>TimeLog</Response>
+    <Actid>{rrid}</Actid>
+    <Time>{datetime.datetime.now().isoformat()[:-7] + 'Z'}</Time>
+    <Result>OK/Fail</Result>
+    </message>
+    """
+    
+    print(time_log_response)
+    return(time_log_response)

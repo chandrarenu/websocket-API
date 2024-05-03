@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import xml.etree.ElementTree as ET
-from attendance.responses import create_register_response, create_login_response
+from attendance.responses import create_register_response, create_login_response, create_time_log_response
 
 
 class AttendanceConsumer(AsyncWebsocketConsumer):
@@ -13,6 +13,7 @@ class AttendanceConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data):
+        
         print(text_data)
         print("-------------------------------------------------------------------------")
         tree = ET.fromstring(text_data)
@@ -20,29 +21,33 @@ class AttendanceConsumer(AsyncWebsocketConsumer):
         
         if request_type == "Register":
             rrid = tree.find('Rrid').text
-            # print(rrid)
             productname = tree.find('ProductName').text
-            # print(productname)
             deviceserialno = tree.find('DeviceSerialNo').text
-            # print(deviceserialno) 
             
             response = create_register_response(rrid, deviceserialno)
             await self.send_response(response)
             
 
-            # self.send(create_register_response(rrid,deviceserialno))
             
         elif request_type == "Login":
             rrid = tree.find('Rrid').text
-            # print(rrid)
             deviceserialno = tree.find('DeviceSerialNo').text
-            # print(deviceserialno) 
             token = tree.find('Token').text if tree.find('Token') is not None else None
             response = create_login_response(rrid, deviceserialno)
             await self.send_response(response)
             
+        elif request_type == "TimeLog":
+            rrid = tree.find('Rrid').text
+            deviceserialno = tree.find('DeviceSerialNo').text
+            productname = tree.find('ProductName').text
+            
+            response = create_time_log_response(rrid)
+            await self.send_response(response)
+            
+            
+            
+            
+        
             
     async def send_response(self, response):
         await self.send(response)
-            # self.send(create_login_response(rrid, deviceserialno))
-            
