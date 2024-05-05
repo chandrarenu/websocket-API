@@ -25,7 +25,10 @@ class AttendanceConsumer(AsyncWebsocketConsumer):
             request_element = tree.find('Request')
             
             if request_element is None or request_element.text is None:
-                raise ValueError("'Request' element not found in XML message.")
+                error_response = f"""<Message><Result>Error:Missing 'Request' element</Result></Message>"""
+                await self.send_response(error_response)
+                return
+                # raise ValueError("'Request' element not found in XML message.")
                 # print("Error:'Request' element not found in XML message.")
                 # return
             
